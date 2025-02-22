@@ -1,0 +1,12 @@
+package nest.esprit.user.Entity.enumeration;
+
+public enum RoleType {
+    ROLE_TUTOR,ROLE_STUDENT,ROLE_ADMIN
+}
+/*INSERT INTO `role` (`id`, `permission`, `name`)
+VALUES
+    (1, 'ADMIN:ALL', 'ROLE_ADMIN'),
+    (2, 'COURS:READ,MODULE:READ', 'ROLE_STUDENT'),
+    (3, 'COURS:READ,COURS:WRITE,COURS:UPDATE,COURS,COURS:DELETE,MODULE:READ,MODULE:WRITE,RECLAMATION:ALL,MODULE:DELETE,MODULE:UPDATE', 'ROLE_TUTOR');
+
+*/

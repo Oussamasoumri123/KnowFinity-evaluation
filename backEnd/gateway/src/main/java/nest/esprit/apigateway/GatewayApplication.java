@@ -1,5 +1,6 @@
 package nest.esprit.apigateway;
 
+import nest.esprit.apigateway.filter.AuthGatewayFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -16,10 +17,16 @@ public class GatewayApplication {
 	}
 
 	@Bean
-	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+	public RouteLocator customRouteLocator(RouteLocatorBuilder builder, AuthGatewayFilter authGatewayFilter) {
 		return builder.routes()
-				.route("user-server", r -> r.path("/user/**")
-						.uri("lb://user"))
+				.route("user-service", r -> r.path("/user/**")
+						.uri("lb://USER-SERVICE"))
+				.route("course-service", r -> r.path("/course/**")
+						.filters(f -> f.filter(authGatewayFilter)) // Ensure filter is applied here
+						.uri("lb://COURSE-SERVICE"))
 				.build();
 	}
+
+
+
 }
