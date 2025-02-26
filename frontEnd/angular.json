@@ -27,7 +27,15 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/BackOffice/bootstrap/js/bootstrap.min.js",
+              "src/assets/BackOffice/js/chart.min.js",
+              "src/assets/BackOffice/js/bs-init.js",
+              "src/assets/BackOffice/js/theme.js",
+              "src/assets/FrontOffice/js/bold-and-bright.js",
+              "src/assets/FrontOffice/js/bs-init.js"
+            ]
+
           },
           "configurations": {
             "production": {
