@@ -1,15 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FrontOfficeRoutingModule } from './front-office-routing.module';
+
+// Import FrontOffice Components
 import { HomeComponent } from './home/home.component';
-import { FooterComponent } from './footer/footer.component';
+import { HomeContentComponent } from './home-content/home-content.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { FooterComponent } from './footer/footer.component';
+import {RouterModule} from "@angular/router";
+import { CourseComponent } from './course/course.component';
 
 @NgModule({
-  declarations: [HomeComponent, FooterComponent, NavBarComponent],
+  declarations: [
+    HomeComponent,
+    HomeContentComponent,
+    NavBarComponent,  // ✅ Correct Front-Office Navbar
+    FooterComponent, CourseComponent   // ✅ Correct Front-Office Footer
+  ],
   imports: [
     CommonModule,
-    FrontOfficeRoutingModule
+    FrontOfficeRoutingModule,
   ]
 })
 export class FrontOfficeModule { }

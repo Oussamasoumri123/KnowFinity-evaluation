@@ -6,16 +6,18 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { FooterComponent } from './footer/footer.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { DashboardContentComponent } from './dashboard-content/dashboard-content.component';
+import { ForumComponent } from './forum/forum.component';
 
 
 @NgModule({
   declarations: [
-
-
     DashboardComponent,
     SideBarComponent,
     FooterComponent,
-    NavBarComponent
+    NavBarComponent,
+    DashboardContentComponent,
+    ForumComponent,
   ],
   exports: [
     FooterComponent,

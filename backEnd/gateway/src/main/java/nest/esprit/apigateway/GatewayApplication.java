@@ -24,6 +24,7 @@ public class GatewayApplication {
 				.route("course-service", r -> r.path("/course/**")
 						.filters(f -> f.filter(authGatewayFilter)) // Ensure filter is applied here
 						.uri("lb://COURSE-SERVICE"))
+
 				.build();
 	}
 
