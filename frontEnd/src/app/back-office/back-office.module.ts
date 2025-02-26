@@ -8,6 +8,7 @@ import { FooterComponent } from './footer/footer.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { DashboardContentComponent } from './dashboard-content/dashboard-content.component';
 import { ForumComponent } from './forum/forum.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { ForumComponent } from './forum/forum.component';
     NavBarComponent,
     DashboardContentComponent,
     ForumComponent,
+    NotFoundComponent,
   ],
   exports: [
     FooterComponent,

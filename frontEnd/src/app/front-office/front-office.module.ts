@@ -9,13 +9,15 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { FooterComponent } from './footer/footer.component';
 import {RouterModule} from "@angular/router";
 import { CourseComponent } from './course/course.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { EvaluationComponent } from './evaluation/evaluation.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     HomeContentComponent,
     NavBarComponent,  // ✅ Correct Front-Office Navbar
-    FooterComponent, CourseComponent   // ✅ Correct Front-Office Footer
+    FooterComponent, CourseComponent, NotFoundComponent, EvaluationComponent   // ✅ Correct Front-Office Footer
   ],
   imports: [
     CommonModule,
