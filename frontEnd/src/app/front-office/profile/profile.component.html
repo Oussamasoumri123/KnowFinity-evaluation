@@ -1,0 +1,109 @@
+<section class="py-3">
+  <div class="container py-3">
+    <div class="row mb-2">
+      <div class="col-md-8 col-xl-6 text-center mx-auto">
+        <p class="fw-bold text-primary mb-1">Profile Page</p>
+        <h2 class="fw-bold">Manage Your Profile</h2>
+      </div>
+    </div>
+
+    <div class="row d-flex justify-content-center">
+      <!-- Sidebar -->
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="bg-dark text-white p-4 rounded text-center">
+          <img [src]="profile?.imageUrl || 'https://img.freepik.com/free-icon/user_318-159711.jpg'"
+               alt="User Image" class="rounded-circle mb-2" style="width: 80px; height: 80px;">
+          <h5 class="fw-bold">{{ profile?.firstName }} {{ profile?.lastName }}</h5>
+          <p class="text-muted">Since {{ profile?.createdAt | date:'longDate' }}</p>
+
+          <button class="btn btn-outline-light d-block w-100 py-2 mb-2"
+                  [ngClass]="{ 'btn-primary': activeSection === 'profile' }"
+                  (click)="setActiveSection('profile')">Profile Settings</button>
+
+          <button class="btn btn-outline-light d-block w-100 py-2 mb-2"
+                  [ngClass]="{ 'btn-primary': activeSection === 'password' }"
+                  (click)="setActiveSection('password')">Password Settings</button>
+
+          <button class="btn btn-outline-light d-block w-100 py-2 mb-2"
+                  [ngClass]="{ 'btn-primary': activeSection === 'authentication' }"
+                  (click)="setActiveSection('authentication')">Authentication Settings</button>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-md-9">
+        <div class="card bg-dark text-white shadow-sm mb-4">
+          <div class="card-body">
+            <h3 class="mb-4">{{ activeSection | titlecase }} Settings</h3>
+
+            <!-- Profile Section -->
+            <div *ngIf="activeSection === 'profile'">
+              <form>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">First Name</label>
+                    <input class="form-control bg-dark text-white border-light" [value]="profile?.firstName" disabled>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Last Name</label>
+                    <input class="form-control bg-dark text-white border-light" [value]="profile?.lastName" disabled>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input class="form-control bg-dark text-white border-light" [value]="profile?.email" disabled>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">phone</label>
+                    <input class="form-control bg-dark text-white border-light" [value]="profile?.phone" disabled>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Adress</label>
+                    <input class="form-control bg-dark text-white border-light" [value]="profile?.address" disabled>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Job title</label>
+                    <input class="form-control bg-dark text-white border-light" [value]="profile?.title" disabled>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Bio</label>
+                    <input class="form-control bg-dark text-white border-light" [value]="profile?.bio" disabled>
+                  </div>
+
+                </div>
+              </form>
+            </div>
+
+            <!-- Password Section -->
+            <div *ngIf="activeSection === 'password'">
+              <form>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Current Password</label>
+                    <input type="password" class="form-control bg-dark text-white border-light" disabled>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">New Password</label>
+                    <input type="password" class="form-control bg-dark text-white border-light" disabled>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Confirm New Password</label>
+                    <input type="password" class="form-control bg-dark text-white border-light" disabled>
+                  </div>
+                </div>
+                <button class="btn btn-primary" disabled>Update Password</button>
+              </form>
+            </div>
+
+            <!-- Authentication Settings -->
+            <div *ngIf="activeSection === 'authentication'">
+              <button class="btn btn-primary" disabled>
+                {{ profile?.usingMfa ? 'Disable' : 'Enable' }} MFA
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -11,17 +11,24 @@ import {RouterModule} from "@angular/router";
 import { CourseComponent } from './course/course.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { EvaluationComponent } from './evaluation/evaluation.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import {FormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     HomeContentComponent,
-    NavBarComponent,  // ✅ Correct Front-Office Navbar
-    FooterComponent, CourseComponent, NotFoundComponent, EvaluationComponent   // ✅ Correct Front-Office Footer
+    NavBarComponent,
+    FooterComponent, CourseComponent, NotFoundComponent, EvaluationComponent, LoginComponent, RegisterComponent, ProfileComponent
   ],
   imports: [
     CommonModule,
     FrontOfficeRoutingModule,
+    FormsModule,
+    HttpClientModule,
   ]
 })
 export class FrontOfficeModule { }
