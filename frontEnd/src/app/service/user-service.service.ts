@@ -13,6 +13,18 @@ export class UserService {
 
   constructor(private http: HttpClient) {
   }
+  loginAdmin$ = (email: string, password: string) => <Observable<CustomHttpResponse<Profile>>>
+    this.http.post<CustomHttpResponse<Profile>>(`${this.server}/user/adminLogin`, { email, password })
+      .pipe(
+        tap(response => console.log('Admin Login Response:', response)),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => ({
+            statusCode: error.status,
+            reason: error.error.reason || 'Login failed.'
+          }));
+        })
+      );
+
 
   login$ = (email: string, password: string) => <Observable<CustomHttpResponse<Profile>>>
     this.http.post<CustomHttpResponse<Profile>>(`${this.server}/user/login`, {email, password})
@@ -20,6 +32,7 @@ export class UserService {
         tap(console.log),
         catchError(this.handleError)
       );
+
   verifyCode$ = (email: string, code: string) => <Observable<CustomHttpResponse<Profile>>>
     this.http.get<CustomHttpResponse<Profile>>(`${this.server}/user/verify/code/${email}/${code}`)
       .pipe(
