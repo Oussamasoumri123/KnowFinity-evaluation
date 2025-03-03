@@ -9,6 +9,9 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { DashboardContentComponent } from './dashboard-content/dashboard-content.component';
 import { ForumComponent } from './forum/forum.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { LoginComponent } from './login/login.component';
+import {FormsModule} from "@angular/forms";
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
@@ -20,6 +23,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     DashboardContentComponent,
     ForumComponent,
     NotFoundComponent,
+    LoginComponent,
+    ProfileComponent,
   ],
   exports: [
     FooterComponent,
@@ -27,7 +32,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
   ],
   imports: [
     CommonModule,
-    BackOfficeRoutingModule
+    BackOfficeRoutingModule,
+    FormsModule
   ]
 })
 export class BackOfficeModule {

@@ -255,6 +255,27 @@ catch (Exception e){
         }
     }
 
+    @Override
+    public UserDTO createAdmin(User user) {
+        if(userRepository.countByEmail(user.getEmail().trim().toLowerCase()) > 0){
+            throw new ApiException("Email already in use");
+        }
+        try {
+            user.setEnabled(true);
+            user.setNonLocked(true);
+            user.setPassword(encoder.encode(user.getPassword()));
+            userRepository.saveAndFlush(user);
+            roleService.addRoleToUser(user.getId(), RoleType.ROLE_ADMIN);
+            return mapToUserDTO(user);
+        }
+        catch (EmptyResultDataAccessException e){
+            throw new ApiException("No Role found by" + RoleType.ROLE_ADMIN.name());
+        }
+        catch (Exception e){
+            throw new ApiException(e.getMessage()+"an error occurred try again");
+        }
+    }
+
     static String getVerificationUrl (String key, String type) {
 return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/verify/"+type+"/"+key).toUriString();
     }

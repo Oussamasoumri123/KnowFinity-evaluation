@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import nest.esprit.user.Entity.enumeration.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,6 +78,27 @@ public class UserController {
             throw new ApiException("Invalid email/password");
         }
     }
+    @PostMapping("/adminLogin")
+    public ResponseEntity<HttpResponseUser> Adminlogin(@RequestBody @Valid LoginForm loginForm) {
+        try {
+            Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword()));
+
+            UserDTO user=getAuthenticatedUser(authentication);
+            if (!user.getRoleName().equals(RoleType.ROLE_ADMIN)) {
+                throw new ApiException("You are not an admin");
+            }
+
+            return  sendResponse(user);
+        } catch (BadCredentialsException e) {
+            // processError(request, response, e);
+
+            throw new ApiException("Bad credentials");
+        }
+        catch (Exception e) {
+
+            throw new ApiException("You are not an admin");
+        }
+    }
     //bech te5ou authenticateurUser bel dto bch t'exposihom lel user
     private UserDTO getAuthenticatedUser(Authentication authentication) {
         return ((UserPrincipal) authentication.getPrincipal()).getUser();
@@ -98,6 +120,18 @@ public class UserController {
     @PostMapping("/addTutor")
     public ResponseEntity<HttpResponseUser> saveTutor(@RequestBody @Valid User user) {
         UserDTO userDto = userService.createTutor(user);
+        System.out.println("UserDTO: " + userDto);
+        return ResponseEntity.created(getUri()).body(HttpResponseUser.builder()
+                .timeStamp(now().toString())
+                .data(of("user", userDto))
+                .message(String.format("Tutor account created for user %s", userDto.getFirstName()))
+                .status(CREATED)
+                .statusCode(CREATED.value())
+                .build());
+    }
+    @PostMapping("/addAdmin")
+    public ResponseEntity<HttpResponseUser> saveAdmin(@RequestBody @Valid User user) {
+        UserDTO userDto = userService.createAdmin(user);
         System.out.println("UserDTO: " + userDto);
         return ResponseEntity.created(getUri()).body(HttpResponseUser.builder()
                 .timeStamp(now().toString())
