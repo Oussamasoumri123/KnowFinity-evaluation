@@ -72,7 +72,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request -> request.requestMatchers(PUBLIC_URLS).permitAll());
         http.authorizeHttpRequests(request -> request.requestMatchers(OPTIONS).permitAll()); // Not needed
         http.authorizeHttpRequests(request -> request.requestMatchers(DELETE, "/user/delete/**").hasAnyAuthority("ADMIN:ALL"));
-        http.authorizeHttpRequests(request -> request.requestMatchers(POST, "/api/**").hasAnyAuthority("ADMIN:ALL"));
+        http.authorizeHttpRequests(request -> request.requestMatchers(POST, "/user/getUsers").hasAnyAuthority("COURS:READ"));
         http.exceptionHandling(exception -> exception.accessDeniedHandler(customAccesDeniedHandler).authenticationEntryPoint(customAuthenticationEntryPoint));
         http.authorizeHttpRequests(request -> request.anyRequest().authenticated());
         http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);

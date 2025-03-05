@@ -79,7 +79,9 @@ export class UserService {
           }));
         })
       );
-
+  getUsers(): Observable<{ data: { users: User[] } }> {
+    return this.http.get<{ data: { users: User[] } }>(`${this.server}/user/getUsers`);
+  }
 
 
 }

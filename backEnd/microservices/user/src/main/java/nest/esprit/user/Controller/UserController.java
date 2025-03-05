@@ -56,6 +56,20 @@ public class UserController {
     @Autowired
     private ResetPasswordService resetPasswordService;
 
+
+    @GetMapping("/getUsers")
+    public ResponseEntity<HttpResponseUser> getUsers() {
+        return ResponseEntity.ok()
+                .body(
+                        HttpResponseUser.builder()
+                                .timeStamp(LocalDateTime.now().toString())
+                                .data(Map.of("users", userService.getUsers()))
+                                .message("Users retrieved")
+                                .status(HttpStatus.OK)
+                                .statusCode(HttpStatus.OK.value())
+                                .build()
+                );
+    }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpResponseUser> deleteUser(@PathVariable  Long id) {
         //the name of the authentication howa el email

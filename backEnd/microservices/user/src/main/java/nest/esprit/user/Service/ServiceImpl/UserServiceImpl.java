@@ -32,6 +32,7 @@ import java.beans.PropertyDescriptor;
 import java.util.Arrays;
 import java.util.Date;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -329,6 +330,10 @@ catch (Exception e){
         userRepository.delete(user);
     }
 
+    @Override
+    public List<User> getUsers() {
+
+ return userRepository.findAll();  }
 
 
 

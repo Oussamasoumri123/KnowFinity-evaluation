@@ -3,6 +3,8 @@ package nest.esprit.user.Service;
 import nest.esprit.user.Entity.DTO.UserDTO;
 import nest.esprit.user.Entity.User;
 
+import java.util.List;
+
 public interface UserService {
     UserDTO createUser(User user);
     UserDTO getUserByEmail(String email);
@@ -19,4 +21,5 @@ public interface UserService {
     UserDTO updateUser(User user);
     void deleteUser(Long id);
 
+    List<User> getUsers();
 }

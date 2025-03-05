@@ -1,12 +1,12 @@
 package nest.esprit.user.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
 
 
 import java.time.LocalDateTime;
@@ -20,8 +20,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@DynamicUpdate
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,10 +65,12 @@ public class User {
     @Column(name = "image_url", nullable = false)
     private String imageUrl = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
     @ManyToMany(fetch = FetchType.EAGER,mappedBy = "users")
+    @JsonIgnore
    private List<Role> role;
     @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
    ResetPassword resetPassword;
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    @JsonIgnore
    AccountVerifications accountVerifications;
     @OneToOne(mappedBy = "user", orphanRemoval = true)
     TwoFactorVerif twoFactorVerif;
