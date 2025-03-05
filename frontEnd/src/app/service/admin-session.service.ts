@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {Key} from "../model/appstates";
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +12,13 @@ export class AdminSessionService {
 
   // Store Admin Token & User Info
   setAdminSession(token: string, user: any) {
-    localStorage.setItem(this.adminTokenKey, token);
+    localStorage.setItem(Key.TOKEN, token);
     localStorage.setItem(this.adminUserKey, JSON.stringify(user));
   }
 
   // Retrieve Admin Token
   getAdminToken(): string | null {
-    return localStorage.getItem(this.adminTokenKey);
+    return localStorage.getItem(Key.TOKEN);
   }
 
   // Retrieve Admin User Data
@@ -33,7 +34,7 @@ export class AdminSessionService {
 
   // Clear Admin Session
   logout() {
-    localStorage.removeItem(this.adminTokenKey);
+    localStorage.removeItem(Key.TOKEN);
     localStorage.removeItem(this.adminUserKey);
   }
 }

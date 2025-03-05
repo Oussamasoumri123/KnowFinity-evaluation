@@ -9,6 +9,7 @@ import {ProfileComponent} from "./profile/profile.component";
 import {adminAuthGuard} from "../guards/admin-auth.guard";
 import {HomeComponent} from "../front-office/home/home.component";
 import {HomeContentComponent} from "../front-office/home-content/home-content.component";
+import {UsersComponent} from "./users/users.component";
 
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent ,children : [{path:'' , component:DashboardContentComponent}] , canActivate: [adminAuthGuard] },
   { path: 'profile', component: DashboardComponent ,children : [{path:'' , component:ProfileComponent}],canActivate: [adminAuthGuard] },
   { path: 'forum', component: DashboardComponent ,children : [{path:'' , component:ForumComponent}],canActivate: [adminAuthGuard] },
+  { path: 'users', component: DashboardComponent ,children : [{path:'' , component:UsersComponent}],canActivate: [adminAuthGuard] },
   { path: '**', component: HomeComponent ,children : [{path:'' , component:HomeContentComponent}] },
 
 

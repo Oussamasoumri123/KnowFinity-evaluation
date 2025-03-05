@@ -32,13 +32,15 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfig {
     private static final String[] PUBLIC_URLS = {"/user/login/**","/user/register/**","/user/verify/code/**",
             "/user/RestPassword/**","/user/verify/password/**","/user/resetpassword/**","/user/verify/account/**"
-    ,"/user/refresh/token/**","/user/addTutor","/user/addAdmin","/user/adminLogin"};
+    ,"/user/refresh/token/**","/user/addTutor","/user/addAdmin","/user/adminLogin","/updateProfile"};
+    //map de declaration des permissions pour chaque path de microservice
     private static final Map<String, String> PATH_PERMISSION_MAP = createPathPermissionMap();
 
     private static Map<String, String> createPathPermissionMap() {
         Map<String, String> map = new HashMap<>();
-        map.put("/course/test", "COURS:READ"); // Example
+            map.put("/course/test", "ADMIN:ALL"); // Example
         map.put("/course/create", "COURS:WRITE");
+
         return map;
     }
     public static String getRequiredPermission(String path) {
@@ -69,9 +71,8 @@ public class SecurityConfig {
         http.sessionManagement(session -> session.sessionCreationPolicy(STATELESS));
         http.authorizeHttpRequests(request -> request.requestMatchers(PUBLIC_URLS).permitAll());
         http.authorizeHttpRequests(request -> request.requestMatchers(OPTIONS).permitAll()); // Not needed
-        http.authorizeHttpRequests(request -> request.requestMatchers(DELETE, "/user/delete/**").hasAnyAuthority("DELETE:USER"));
-        http.authorizeHttpRequests(request -> request.requestMatchers(DELETE, "/customer/delete/**").hasAnyAuthority("DELETE:CUSTOMER"));
-        http.authorizeHttpRequests(request -> request.requestMatchers(POST, "/api/**").hasAnyAuthority("ADMIN:ALL"));
+        http.authorizeHttpRequests(request -> request.requestMatchers(DELETE, "/user/delete/**").hasAnyAuthority("ADMIN:ALL"));
+        http.authorizeHttpRequests(request -> request.requestMatchers(POST, "/user/getUsers").hasAnyAuthority("COURS:READ"));
         http.exceptionHandling(exception -> exception.accessDeniedHandler(customAccesDeniedHandler).authenticationEntryPoint(customAuthenticationEntryPoint));
         http.authorizeHttpRequests(request -> request.anyRequest().authenticated());
         http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);

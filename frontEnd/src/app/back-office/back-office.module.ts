@@ -12,6 +12,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginComponent } from './login/login.component';
 import {FormsModule} from "@angular/forms";
 import { ProfileComponent } from './profile/profile.component';
+import { UsersComponent } from './users/users.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { ProfileComponent } from './profile/profile.component';
     NotFoundComponent,
     LoginComponent,
     ProfileComponent,
+    UsersComponent,
   ],
   exports: [
     FooterComponent,

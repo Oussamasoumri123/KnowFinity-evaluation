@@ -3,8 +3,8 @@ import { NgForm } from '@angular/forms';
 import { UserService } from '../../service/user-service.service';
 import { Router } from '@angular/router';
 import { catchError, map, of, Observable, startWith } from 'rxjs';
-import { CustomHttpResponse, DataState, User } from '../../model/user';
-
+import { User } from '../../model/user';
+import { CustomHttpResponse, DataState} from '../../model/appstates';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',

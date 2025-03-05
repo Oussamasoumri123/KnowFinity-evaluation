@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import nest.esprit.user.Entity.enumeration.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -46,8 +48,7 @@ public class UserController {
     private  AuthenticationManager authenticationManager;
     @Autowired
     private RoleService roleService;
-    @Autowired
-    private UserDtoRowmapper userDtoRowmapper;
+
     @Autowired
     private final HttpServletRequest request;
     @Autowired
@@ -55,7 +56,59 @@ public class UserController {
     @Autowired
     private ResetPasswordService resetPasswordService;
 
-//to login
+
+    @GetMapping("/getUsers")
+    public ResponseEntity<HttpResponseUser> getUsers() {
+        return ResponseEntity.ok()
+                .body(
+                        HttpResponseUser.builder()
+                                .timeStamp(LocalDateTime.now().toString())
+                                .data(Map.of("users", userService.getUsers()))
+                                .message("Users retrieved")
+                                .status(HttpStatus.OK)
+                                .statusCode(HttpStatus.OK.value())
+                                .build()
+                );
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<HttpResponseUser> deleteUser(@PathVariable  Long id) {
+        //the name of the authentication howa el email
+
+        userService.deleteUser(id);
+        return ResponseEntity.ok()
+                .body(
+                        HttpResponseUser.builder()
+                                .timeStamp(LocalDateTime.now().toString())
+                                .data(Map.of("user deleted", id))
+                                .message("User deleted ")
+                                .developerMessage("user Deleted")
+                                .status(HttpStatus.OK)
+                                .statusCode(HttpStatus.OK.value())
+                                .build()
+                );
+    }
+
+    @PutMapping("/updateProfile")
+    public ResponseEntity<HttpResponseUser> updateProfile(@RequestBody  User user ,Authentication authentication) {
+        //the name of the authentication howa el email
+        log.info(user.toString());
+        user.setEmail(((UserDTO)authentication.getPrincipal()).getEmail());
+       user.setId(((UserDTO)authentication.getPrincipal()).getId());
+      UserDTO user1 =  userService.updateUser(user);
+
+        return ResponseEntity.ok()
+                .body(
+                        HttpResponseUser.builder()
+                                .timeStamp(LocalDateTime.now().toString())
+                                .data(Map.of("user", user1))
+                                .message("profile updated ")
+                                .developerMessage("profile updated via access token")
+                                .status(HttpStatus.OK)
+                                .statusCode(HttpStatus.OK.value())
+                                .build()
+                  );
+    }
+
     @PostMapping("/login")
     public ResponseEntity<HttpResponseUser> login(@RequestBody @Valid LoginForm loginForm) {
         try {

@@ -2,8 +2,9 @@
 import {HttpClient, HttpClientModule, HttpErrorResponse} from "@angular/common/http";
 import {catchError, Observable, tap, throwError} from "rxjs";
 
-import {Profile, User} from "../model/user";
-import {CustomHttpResponse} from "../model/user";
+import { User} from "../model/user";
+import {CustomHttpResponse} from "../model/appstates";
+import {Profile} from "../model/appstates";
 
 @Injectable({
   providedIn: 'root'
@@ -66,6 +67,20 @@ export class UserService {
       }
     }
     return throwError(() => errorMessage);
+  }
+  updateProfile$ = (user: Partial<User>) => <Observable<CustomHttpResponse<User>>>
+    this.http.put<CustomHttpResponse<User>>(`${this.server}/user/updateProfile`, user)
+      .pipe(
+        tap(response => console.log('Update Profile Response:', response)),
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => ({
+            statusCode: error.status,
+            reason: error.error.reason || 'Profile update failed.'
+          }));
+        })
+      );
+  getUsers(): Observable<{ data: { users: User[] } }> {
+    return this.http.get<{ data: { users: User[] } }>(`${this.server}/user/getUsers`);
   }
 
 

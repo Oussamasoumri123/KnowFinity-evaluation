@@ -1,6 +1,7 @@
   import { Component, OnInit } from '@angular/core';
   import { UserSessionService } from '../../service/user-session.service';
-  import {Key, User} from '../../model/user';
+  import { User} from '../../model/user';
+  import {Key}  from '../../model/appstates';
   import { Router } from '@angular/router';
 
   @Component({

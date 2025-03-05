@@ -1,9 +1,15 @@
 package nest.esprit.user.Service.ServiceImpl;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import nest.esprit.user.Entity.*;
 import nest.esprit.user.Repository.*;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,20 +20,19 @@ import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import nest.esprit.user.Configuration.UserPrincipal;
-import nest.esprit.user.Entity.AccountVerifications;
 import nest.esprit.user.Entity.DTO.UserDTO;
 import nest.esprit.user.Entity.DTO.UserDtoRowmapper;
-import nest.esprit.user.Entity.ResetPassword;
-import nest.esprit.user.Entity.TwoFactorVerif;
-import nest.esprit.user.Entity.User;
 import nest.esprit.user.Entity.enumeration.RoleType;
 import nest.esprit.user.Exception.ApiException;
 import nest.esprit.user.Service.RoleService;
 import nest.esprit.user.Service.UserService;
 
 
+import java.beans.PropertyDescriptor;
+import java.util.Arrays;
 import java.util.Date;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -58,7 +63,6 @@ public class UserServiceImpl implements UserService , UserDetailsService {
     private UserDtoRowmapper userDtoRowmapper;
     @Autowired
     private ResetPasswordRepository resetPasswordRepository;
-
 
     @Autowired
     public UserServiceImpl(
@@ -104,7 +108,8 @@ catch (Exception e){
     }
 
     @Override
-    public UserDTO getUserByEmail(String email) {
+    public UserDTO getUserByEmail(String email) { //surround block try catch if not exist throw Http Responce not found in the database
+
         User user = userRepository.findByEmail(email.trim().toLowerCase());
         return mapToUserDTO(user);
     }
@@ -275,6 +280,62 @@ catch (Exception e){
             throw new ApiException(e.getMessage()+"an error occurred try again");
         }
     }
+
+    public void copyNonNullProperties(User source, User target) {
+        BeanUtils.copyProperties(source, target, getNullPropertyNames(source));
+    }
+
+    private String[] getNullPropertyNames(Object source) {
+        final BeanWrapper wrappedSource = new BeanWrapperImpl(source);
+        return Arrays.stream(wrappedSource.getPropertyDescriptors())
+                .map(PropertyDescriptor::getName)
+                .filter(name -> wrappedSource.getPropertyValue(name) == null)
+                .toArray(String[]::new);
+    }
+
+    @Override
+    public UserDTO updateUser(User user) {
+        if (user.getPassword() != null) {
+            user.setPassword(encoder.encode(user.getPassword()));
+        }
+        User existingUser = userRepository.findById(user.getId()).orElseThrow(
+                () -> new EntityNotFoundException("User not found")
+        );
+        if (user.getPassword() != null) {
+            existingUser.setPassword(encoder.encode(user.getPassword()));
+        }
+        user.setEnabled(true);
+        copyNonNullProperties(user, existingUser);
+
+        return mapToUserDTO(userRepository.save(existingUser));
+
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        // First, remove the user from each role's users list
+        for (Role role : user.getRole()) {
+            role.getUsers().remove(user);  // Remove user from role
+        }
+
+        // Now, clear user's role list to remove the references in the join table
+        user.getRole().clear();
+        userRepository.save(user); // Save changes to remove associations in the join table
+
+        // Finally, delete the user
+        userRepository.delete(user);
+    }
+
+    @Override
+    public List<User> getUsers() {
+
+ return userRepository.findAll();  }
+
+
 
     static String getVerificationUrl (String key, String type) {
 return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/verify/"+type+"/"+key).toUriString();
