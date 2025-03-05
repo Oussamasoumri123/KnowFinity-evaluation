@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import {BehaviorSubject, catchError, map, Observable, of, startWith} from "rxjs";
-import { DataState, Key, LoginState } from '../../model/user';
+
+import {Key,DataState, LoginState } from "../../model/appstates";
+
+
+
 import {Router} from "@angular/router";
 import {UserService} from "../../service/user-service.service";
 import {UserSessionService} from "../../service/user-session.service";

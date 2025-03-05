@@ -9,12 +9,12 @@
 
     <div class="row d-flex justify-content-center">
       <!-- Sidebar -->
-      <div class="col-md-4 col-lg-3 mb-4">
+      <div   *ngIf="profile.user" class="col-md-4 col-lg-3 mb-4">
         <div class="bg-dark text-white p-4 rounded text-center">
-          <img [src]="profile?.imageUrl || 'https://img.freepik.com/free-icon/user_318-159711.jpg'"
+          <img [src]="profile.user.imageUrl || 'https://img.freepik.com/free-icon/user_318-159711.jpg'"
                alt="User Image" class="rounded-circle mb-2" style="width: 80px; height: 80px;">
-          <h5 class="fw-bold">{{ profile?.firstName }} {{ profile?.lastName }}</h5>
-          <p class="text-muted">Since {{ profile?.createdAt | date:'longDate' }}</p>
+          <h5 class="fw-bold">{{ profile.user.firstName }} {{ profile.user.lastName }}</h5>
+          <p class="w-25">Since {{ profile.user.createdAt | date:'longDate' }}</p>
 
           <button class="btn btn-outline-light d-block w-100 py-2 mb-2"
                   [ngClass]="{ 'btn-primary': activeSection === 'profile' }"
@@ -37,38 +37,42 @@
             <h3 class="mb-4">{{ activeSection | titlecase }} Settings</h3>
 
             <!-- Profile Section -->
-            <div *ngIf="activeSection === 'profile'">
+            <div *ngIf="activeSection === 'profile' &&  profile.user">
               <form>
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label class="form-label">First Name</label>
-                    <input class="form-control bg-dark text-white border-light" [value]="profile?.firstName" disabled>
+                    <input class="form-control bg-dark text-white border-light" [(ngModel)]="profile.user.firstName" name="firstName">
                   </div>
                   <div class="col-md-6 mb-3">
                     <label class="form-label">Last Name</label>
-                    <input class="form-control bg-dark text-white border-light" [value]="profile?.lastName" disabled>
+                    <input class="form-control bg-dark text-white border-light" [(ngModel)]="profile.user.lastName" name="lastName">
                   </div>
                   <div class="col-md-6 mb-3">
                     <label class="form-label">Email</label>
-                    <input class="form-control bg-dark text-white border-light" [value]="profile?.email" disabled>
+                    <input class="form-control bg-dark text-white border-light" [value]="profile.user.email" readonly>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label class="form-label">phone</label>
-                    <input class="form-control bg-dark text-white border-light" [value]="profile?.phone" disabled>
+                    <label class="form-label">Phone</label>
+                    <input class="form-control bg-dark text-white border-light" [(ngModel)]="profile.user.phone" name="phone">
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label class="form-label">Adress</label>
-                    <input class="form-control bg-dark text-white border-light" [value]="profile?.address" disabled>
+                    <label class="form-label">Address</label>
+                    <input class="form-control bg-dark text-white border-light" [(ngModel)]="profile.user.address" name="address">
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label class="form-label">Job title</label>
-                    <input class="form-control bg-dark text-white border-light" [value]="profile?.title" disabled>
+                    <label class="form-label">Job Title</label>
+                    <input class="form-control bg-dark text-white border-light" [(ngModel)]="profile.user.title" name="title">
                   </div>
                   <div class="col-md-6 mb-3">
                     <label class="form-label">Bio</label>
-                    <input class="form-control bg-dark text-white border-light" [value]="profile?.bio" disabled>
+                    <input class="form-control bg-dark text-white border-light" [(ngModel)]="profile.user.bio" name="bio">
                   </div>
-
+                  <div>
+                    <button class="btn btn-primary" type="button" (click)="updateProfile()">
+                      Update
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>
@@ -79,25 +83,25 @@
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label class="form-label">Current Password</label>
-                    <input type="password" class="form-control bg-dark text-white border-light" disabled>
+                    <input type="password" class="form-control bg-dark text-white border-light" >
                   </div>
                   <div class="col-md-6 mb-3">
                     <label class="form-label">New Password</label>
-                    <input type="password" class="form-control bg-dark text-white border-light" disabled>
+                    <input type="password" class="form-control bg-dark text-white border-light" >
                   </div>
                   <div class="col-md-6 mb-3">
                     <label class="form-label">Confirm New Password</label>
-                    <input type="password" class="form-control bg-dark text-white border-light" disabled>
+                    <input type="password" class="form-control bg-dark text-white border-light" >
                   </div>
                 </div>
-                <button class="btn btn-primary" disabled>Update Password</button>
+                <button class="btn btn-primary" >Update Password</button>
               </form>
             </div>
 
             <!-- Authentication Settings -->
-            <div *ngIf="activeSection === 'authentication'">
-              <button class="btn btn-primary" disabled>
-                {{ profile?.usingMfa ? 'Disable' : 'Enable' }} MFA
+            <div *ngIf="activeSection === 'authentication' && profile.user">
+              <button class="btn btn-primary" >
+                {{ profile.user.usingMfa ? 'Disable' : 'Enable' }} MFA
               </button>
             </div>
 

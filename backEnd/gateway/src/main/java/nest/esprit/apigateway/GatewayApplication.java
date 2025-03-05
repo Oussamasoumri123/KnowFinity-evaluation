@@ -31,6 +31,7 @@ public class GatewayApplication {
 						.filters(f -> f.filter(authGatewayFilter))
 						.uri("lb://COURSE-SERVICE"))
 
+
 				.build();
 	}
 

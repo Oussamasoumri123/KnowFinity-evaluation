@@ -30,11 +30,15 @@ public class testController {
             objectMapper.registerModule(new JavaTimeModule()); // Add this line
             UserDTO userDTO = objectMapper.readValue(userJson, UserDTO.class);
 
+
+
+
             log.info("Deserialized UserDTO in Course-Service: {}", userDTO);
 
             return ResponseEntity.ok("User details: " + userDTO);
         } catch (JsonProcessingException e) {
             log.error("Error parsing UserDTO", e);
+    
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error parsing UserDTO");
         }
     }

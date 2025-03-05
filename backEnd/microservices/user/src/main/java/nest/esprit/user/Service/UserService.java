@@ -16,4 +16,7 @@ public interface UserService {
     UserDTO verifyAccount(String key);
     UserDTO createTutor(User user);
     UserDTO createAdmin(User user);
+    UserDTO updateUser(User user);
+    void deleteUser(Long id);
+
 }
